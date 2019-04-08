@@ -1,5 +1,7 @@
 from Key import Key
 from Table import ex_d_box
+from Table import final_permutation
+from Table import initial_permutation
 from Table import straight_perm_table
 from Table import s_box
 import textwrap
@@ -50,3 +52,17 @@ def feistel(s32, key):
 class DES:
     def __init__(self, key64, s64):
         self.key = Key(key64)
+        self.s64 = s64
+
+    def encryption(self):
+        key_stream = self.key.key_stream
+
+        # Initial permutation
+        s_init = ''
+        for i in range(64):
+            idx = initial_permutation[i]
+            s_init += self.s64[idx]
+        left = s_init[:32]
+        right = s_init[32:]
+
+        return
