@@ -13,7 +13,7 @@ def xor(s1, s2):
     for i in range(len(s1)):
         c1 = int(s1[i])
         c2 = int(s2[i])
-        r = (c1 != c2)
+        r = int(c1 != c2)
         result += str(r)
     return result
 
@@ -31,13 +31,14 @@ def feistel(s32, key):
 
     # S-boxes
     s32 = ''
-    str_list = textwrap.wrap(s48, 8)
-    for i in range(7):
+    str_list = textwrap.wrap(s48, 6)
+    for i in range(8):
         s = str_list[i]
         row = int(s[0] + s[5], 2)
         col = int(s[1:5], 2)
         box = s_box[i]
         sub = bin(box[row][col])[2:].zfill(4)
+        # print(s, row, col, sub)
         s32 += sub
 
     # Permutation
@@ -56,11 +57,12 @@ class DES:
 
     def encryption(self):
         key_stream = self.key.key_stream
+        print(len(key_stream))
 
         # Initial permutation
         s_init = ''
         for i in range(64):
-            idx = initial_permutation[i]
+            idx = initial_permutation[i] - 1
             s_init += self.s64[idx]
         left = s_init[:32]
         right = s_init[32:]
@@ -71,12 +73,14 @@ class DES:
             left = xor(left, tmp)
             if i != 15:
                 left, right = right, left
+            print('Round idx = ' + str(i))
+            print('Left: ' + str(left) + '; ' + 'Right: ' + str(right))
         s_fin_tmp = left + right
 
         # Final permutation
         s_fin = ''
         for i in range(64):
-            idx = final_permutation[i]
+            idx = final_permutation[i] - 1
             s_fin += s_fin_tmp[idx]
 
         return s_fin

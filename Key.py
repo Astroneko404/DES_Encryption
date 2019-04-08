@@ -11,7 +11,7 @@ def parity_drop(k64: str) -> str:
 
 
 def shift_left(s: str, nbits: int) -> str:
-    result: str = s[nbits:] + s[:nbits - 1]
+    result: str = s[nbits:] + s[:nbits]
     return result
 
 
@@ -28,7 +28,9 @@ def key_gen(k64: str):
     k_stream = []
 
     k56 = parity_drop(k64)
-    for i in range(15):
+    # print('k56:', k56, 'with length', len(k56))
+
+    for i in range(16):
         left = k56[:28]
         right = k56[28:]
         if i == 0 or i == 1 or i == 8 or i == 15:
@@ -46,4 +48,12 @@ class Key:
     def __init__(self, init_key):
         self.__k64 = init_key
         self.key_stream = key_gen(self.__k64)
+        return
+
+    def print_key(self, idx):
+        print('Key idx = ' + str(idx))
+        k = self.key_stream[idx]
+        for i in range(0, len(k), 4):
+            bit = k[i] + k[i+1] + k[i+2] + k[i+3]
+            print(bit, end=' ')
         return
