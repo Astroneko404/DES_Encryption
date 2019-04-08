@@ -52,12 +52,15 @@ def feistel(s32, key):
 # The initial key and text should be both 64-bit
 class DES:
     def __init__(self, key64, s64):
+        if len(key64) != 64:
+            raise Exception('The length of key should be 64')
+        if len(s64) != 64:
+            raise Exception('The length of input string should be 64')
         self.key = Key(key64)
         self.s64 = s64
 
     def encryption(self):
         key_stream = self.key.key_stream
-        print(len(key_stream))
 
         # Initial permutation
         s_init = ''
@@ -66,6 +69,7 @@ class DES:
             s_init += self.s64[idx]
         left = s_init[:32]
         right = s_init[32:]
+        # print(left, right)
 
         # 16 rounds
         for i in range(16):
@@ -73,8 +77,8 @@ class DES:
             left = xor(left, tmp)
             if i != 15:
                 left, right = right, left
-            print('Round idx = ' + str(i))
-            print('Left: ' + str(left) + '; ' + 'Right: ' + str(right))
+            # print('Round idx = ' + str(i))
+            # print('Left: ' + str(left) + '; ' + 'Right: ' + str(right) + '\n')
         s_fin_tmp = left + right
 
         # Final permutation

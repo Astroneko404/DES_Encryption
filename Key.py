@@ -33,13 +33,16 @@ def key_gen(k64: str):
     for i in range(16):
         left = k56[:28]
         right = k56[28:]
+        # print(left, right)
         if i == 0 or i == 1 or i == 8 or i == 15:
             left = shift_left(left, 1)
             right = shift_left(right, 1)
         else:
             left = shift_left(left, 2)
             right = shift_left(right, 2)
+        # print(left, right)
         k = comp_d(left, right)
+        k56 = left + right
         k_stream.append(k)
     return k_stream
 
@@ -48,12 +51,15 @@ class Key:
     def __init__(self, init_key):
         self.__k64 = init_key
         self.key_stream = key_gen(self.__k64)
+        # for i in range(16):
+        #     self.print_key(i)
         return
 
     def print_key(self, idx):
-        print('Key idx = ' + str(idx))
+        print('Key idx = ' + str(idx+1))
         k = self.key_stream[idx]
         for i in range(0, len(k), 4):
             bit = k[i] + k[i+1] + k[i+2] + k[i+3]
             print(bit, end=' ')
+        print()
         return
