@@ -88,3 +88,33 @@ class DES:
             s_fin += s_fin_tmp[idx]
 
         return s_fin
+
+    def decryption(self):
+        key_stream = self.key.key_stream
+
+        # Initial permutation
+        s_init = ''
+        for i in range(64):
+            idx = initial_permutation[i] - 1
+            s_init += self.s64[idx]
+        left = s_init[:32]
+        right = s_init[32:]
+        # print(left, right)
+
+        # 16 rounds with reversed keys
+        for i in range(16):
+            tmp = feistel(right, key_stream[15-i])
+            left = xor(left, tmp)
+            if i != 15:
+                left, right = right, left
+            # print('Round idx = ' + str(i))
+            # print('Left: ' + str(left) + '; ' + 'Right: ' + str(right) + '\n')
+        s_fin_tmp = left + right
+
+        # Final permutation
+        s_fin = ''
+        for i in range(64):
+            idx = final_permutation[i] - 1
+            s_fin += s_fin_tmp[idx]
+
+        return s_fin
