@@ -1,5 +1,5 @@
+from binascii import hexlify
 from Des import DES
-from Key import Key
 
 
 # Convert a binary string to a hex string
@@ -10,6 +10,20 @@ def bin_2_hex(bin_str):
 # Convert a hex string to a bin string
 def hex_2_bin(hex_str):
     return bin(int(hex_str, 16))[2:].zfill(len(hex_str)*4)
+
+
+def str_2_hex(s):
+    result = ''
+    for c in s:
+        result += hex(ord(c))[2:]
+    return result
+
+
+def hex_2_str(s):
+    result = ''
+    for i in range(0, len(s), 2):
+        result += chr(int(s[i] + s[i+1], 16))
+    return result.strip()
 
 
 # Print binary string in format
@@ -94,3 +108,24 @@ des_7 = DES(init_key_bin_7, init_str_7)
 text_7 = des_7.cbc_decryption(iv_7)
 print_bin(bin_2_hex(text_7))
 print()
+
+###################################
+# Test 8
+# Text encryption
+init_key_bin_8 = hex_2_bin('133457799BBCDFF1')
+init_str_8 = hex_2_bin(str_2_hex('Hello World!'))
+iv_8 = hex_2_bin('AB125AFC396214F3')
+des_8 = DES(init_key_bin_8, init_str_8)
+text_8 = des_8.cbc_encryption(iv_8)
+print_bin(bin_2_hex(text_8))
+print()
+
+###################################
+# Test 9
+# Text decryption
+init_key_bin_9 = hex_2_bin('133457799BBCDFF1')
+init_str_9 = hex_2_bin('440f3378b91694203b928223b00cfe48')
+iv_9 = hex_2_bin('AB125AFC396214F3')
+des_9 = DES(init_key_bin_9, init_str_9)
+text_9 = hex_2_str(bin_2_hex(des_9.cbc_decryption(iv_9)))
+print(text_9)
