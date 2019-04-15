@@ -143,3 +143,39 @@ class DES:
             plain = self.decryption(s)
             result += plain
         return result
+
+    def cbc_encryption(self, iv):
+        if len(iv) != 64:
+            raise Exception('The length of IV should be 64')
+        result_list = []
+        result = ''
+
+        for i in range(len(self.input_list)):
+            text_block = self.input_list[i]
+            if i == 0:
+                v = iv
+            else:
+                v = result_list[i-1]
+            in_text = xor(text_block, v)
+            out_text = self.encryption(in_text)
+
+            result_list.append(out_text)
+            result += out_text
+        return result
+
+    def cbc_decryption(self, iv):
+        if len(iv) != 64:
+            raise Exception('The length of IV should be 64')
+        result = ''
+
+        for i in range(len(self.input_list)):
+            text_block = self.input_list[i]
+            if i == 0:
+                v = iv
+            else:
+                v = self.input_list[i-1]
+            in_text = self.decryption(text_block)
+            out_text = xor(in_text, v)
+
+            result += out_text
+        return result

@@ -72,3 +72,25 @@ des_5 = DES(init_key_bin_5, init_str_5)
 text_5 = des_5.ecb_decryption()
 print_bin(bin_2_hex(text_5))
 print()
+
+###################################
+# Test 6
+# CBC mode encryption
+init_key_bin_6 = hex_2_bin('133457799BBCDFF1')
+init_str_6 = hex_2_bin('0123456789ABCDEF0123456789ABCD')
+iv_6 = hex_2_bin('AB125AFC396214F3')
+des_6 = DES(init_key_bin_6, init_str_6)
+text_6 = des_6.cbc_encryption(iv_6)
+print_bin(bin_2_hex(text_6))
+print()
+
+###################################
+# Test 7
+# CBC mode decryption
+init_key_bin_7 = hex_2_bin('133457799BBCDFF1')
+init_str_7 = hex_2_bin('50bd35a7cab04b71eb1dbc5c70b27c59')
+iv_7 = hex_2_bin('AB125AFC396214F3')
+des_7 = DES(init_key_bin_7, init_str_7)
+text_7 = des_7.cbc_decryption(iv_7)
+print_bin(bin_2_hex(text_7))
+print()
