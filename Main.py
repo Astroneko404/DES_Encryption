@@ -29,8 +29,8 @@ def print_bin(s):
 init_key_bin_1 = bin(int('0123456789abcdef', 16))[2:].zfill(64)
 init_str_1 = bin(int('0123456789abcdef', 16))[2:].zfill(64)
 des_1 = DES(init_key_bin_1, init_str_1)
-cipher_text_1 = bin_2_hex(des_1.encryption())
-print_bin(cipher_text_1)
+text_1 = bin_2_hex(des_1.encryption(des_1.input_list[0]))
+print_bin(text_1)
 print()
 
 ###################################
@@ -38,9 +38,9 @@ print()
 # Key and string are taken from http://page.math.tu-berlin.de/~kant/teaching/hess/krypto-ws2006/des.htm
 init_key_bin_2 = hex_2_bin('133457799BBCDFF1')
 init_str_2 = hex_2_bin('0123456789ABCDEF')
-des = DES(init_key_bin_2, init_str_2)
-cipher_text_2 = des.encryption()
-print_bin(bin_2_hex(cipher_text_2))
+des_2 = DES(init_key_bin_2, init_str_2)
+text_2 = des_2.encryption(des_2.input_list[0])
+print_bin(bin_2_hex(text_2))
 print()
 
 ###################################
@@ -48,6 +48,27 @@ print()
 # Decryption of Test 2
 init_key_bin_3 = hex_2_bin('133457799BBCDFF1')
 init_str_3 = hex_2_bin('85e813540f0ab405')
-des = DES(init_key_bin_3, init_str_3)
-cipher_text_3 = des.decryption()
-print_bin(bin_2_hex(cipher_text_3))
+des_3 = DES(init_key_bin_3, init_str_3)
+text_3 = des_3.decryption(des_3.input_list[0])
+print_bin(bin_2_hex(text_3))
+print()
+
+###################################
+# Test 4
+# ECB mode encryption
+init_key_bin_4 = hex_2_bin('133457799BBCDFF1')
+init_str_4 = hex_2_bin('0123456789ABCDEF0123456789ABCD')
+des_4 = DES(init_key_bin_4, init_str_4)
+text_4 = des_4.ecb_encryption()
+print_bin(bin_2_hex(text_4))
+print()
+
+###################################
+# Test 5
+# ECB mode decryption
+init_key_bin_5 = hex_2_bin('133457799BBCDFF1')
+init_str_5 = hex_2_bin('85e813540f0ab405ecc1a6e177f393b1')
+des_5 = DES(init_key_bin_5, init_str_5)
+text_5 = des_5.ecb_decryption()
+print_bin(bin_2_hex(text_5))
+print()

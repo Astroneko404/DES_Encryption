@@ -51,22 +51,31 @@ def feistel(s32, key):
 
 # The initial key and text should be both 64-bit
 class DES:
-    def __init__(self, key64, s64):
+    def __init__(self, key64, input_str):
         if len(key64) != 64:
             raise Exception('The length of key should be 64')
+
+        # Get the key stream
+        self.key = Key(key64)
+
+        # Preprocess the input string
+        # Padding at the end of string
+        r = len(input_str) % 64
+        if r != 0:
+            for i in range(64 - r):
+                input_str += '0'
+        self.input_list = textwrap.wrap(input_str, 64)
+
+    def encryption(self, s64):
         if len(s64) != 64:
             raise Exception('The length of input string should be 64')
-        self.key = Key(key64)
-        self.s64 = s64
-
-    def encryption(self):
         key_stream = self.key.key_stream
 
         # Initial permutation
         s_init = ''
         for i in range(64):
             idx = initial_permutation[i] - 1
-            s_init += self.s64[idx]
+            s_init += s64[idx]
         left = s_init[:32]
         right = s_init[32:]
         # print(left, right)
@@ -89,14 +98,16 @@ class DES:
 
         return s_fin
 
-    def decryption(self):
+    def decryption(self, s64):
+        if len(s64) != 64:
+            raise Exception('The length of input string should be 64')
         key_stream = self.key.key_stream
 
         # Initial permutation
         s_init = ''
         for i in range(64):
             idx = initial_permutation[i] - 1
-            s_init += self.s64[idx]
+            s_init += s64[idx]
         left = s_init[:32]
         right = s_init[32:]
         # print(left, right)
@@ -118,3 +129,17 @@ class DES:
             s_fin += s_fin_tmp[idx]
 
         return s_fin
+
+    def ecb_encryption(self):
+        result = ''
+        for s in self.input_list:
+            cipher = self.encryption(s)
+            result += cipher
+        return result
+
+    def ecb_decryption(self):
+        result = ''
+        for s in self.input_list:
+            plain = self.decryption(s)
+            result += plain
+        return result
