@@ -1,6 +1,8 @@
 from Des import DES
 
 
+# Key_list is a list with 3 keys of 64-bit
+# Input_str should be also 64-bit
 class TriDES:
     def __init__(self, key_list, input_str):
         self.key_list = key_list
