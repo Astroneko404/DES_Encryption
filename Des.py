@@ -50,7 +50,6 @@ def feistel(s32, key):
     return result
 
 
-# The initial key and text should be both 64-bit
 class DES:
     def __init__(self, key64, input_str):
         if len(key64) != 64:
@@ -138,6 +137,7 @@ class DES:
             result += cipher
         return result
 
+    # For test purpose only
     def ecb_encryption_mp(self):
         result = ''
         pool = Pool(processes=len(self.input_list))
