@@ -5,6 +5,7 @@ from Table import initial_permutation
 from Table import straight_perm_table
 from Table import s_box
 import textwrap
+from multiprocessing.pool import Pool
 
 
 # s1 and s2 are binary strings with same length
@@ -135,6 +136,14 @@ class DES:
         for s in self.input_list:
             cipher = self.encryption(s)
             result += cipher
+        return result
+
+    def ecb_encryption_mp(self):
+        result = ''
+        pool = Pool(processes=len(self.input_list))
+        cipher = [pool.apply(self.encryption, args=(s,)) for s in self.input_list]
+        for c in cipher:
+            result += c
         return result
 
     def ecb_decryption(self):

@@ -1,41 +1,5 @@
-from binascii import hexlify
+from Convert import bin_2_hex, hex_2_str, hex_2_bin, print_bin, str_2_hex
 from Des import DES
-
-
-# Convert a binary string to a hex string
-def bin_2_hex(bin_str):
-    return hex(int(bin_str, 2))[2:]
-
-
-# Convert a hex string to a bin string
-def hex_2_bin(hex_str):
-    return bin(int(hex_str, 16))[2:].zfill(len(hex_str)*4)
-
-
-def str_2_hex(s):
-    result = ''
-    for c in s:
-        result += hex(ord(c))[2:]
-    return result
-
-
-def hex_2_str(s):
-    result = ''
-    for i in range(0, len(s), 2):
-        result += chr(int(s[i] + s[i+1], 16))
-    return result.strip()
-
-
-# Print binary string in format
-def print_bin(s):
-    r = len(s) % 4
-    if r != 0:
-        for i in range(4-r):
-            s = '0' + s
-    for i in range(0, len(s), 4):
-        print(s[i]+s[i+1]+s[i+2]+s[i+3], end=' ')
-    return
-
 
 ###################################
 # Test 1
@@ -129,3 +93,4 @@ iv_9 = hex_2_bin('AB125AFC396214F3')
 des_9 = DES(init_key_bin_9, init_str_9)
 text_9 = hex_2_str(bin_2_hex(des_9.cbc_decryption(iv_9)))
 print(text_9)
+
